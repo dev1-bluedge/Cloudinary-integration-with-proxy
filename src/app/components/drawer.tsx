@@ -127,11 +127,7 @@ export function Drawers() {
               stroke="currentColor"
               className="size-6"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
-              />
+              <path d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
             </svg>
           </div>
         </DrawerTrigger>
@@ -197,7 +193,9 @@ export function Drawers() {
                                 src={image.imageUrl || ""}
                                 height={110}
                                 onClick={() => {
-                                  setPreview(chooseImage?.url || null);
+                                  if (chooseImage?.url) {
+                                    setPreview(chooseImage?.url || null);
+                                  }
                                   setChooseImage({
                                     id: image.id,
                                     url: image.imageUrl as string,
@@ -287,7 +285,7 @@ export function Drawers() {
                   <div>
                     <label
                       htmlFor="image"
-                      className="flex flex-col items-center justify-center min-h-[450px]  border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                      className="flex flex-col items-center justify-center min-h-[434px]  border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                     >
                       <span className="text-sm text-gray-600 ">
                         <svg
@@ -314,6 +312,7 @@ export function Drawers() {
                         onChange={handleImageChange}
                         required
                       />
+                      <p>Click here</p>
                     </label>
                   </div>
                   <div className="flex justify-center">
