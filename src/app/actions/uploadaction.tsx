@@ -1,4 +1,4 @@
-import { generateSignature } from "./action";
+import { generateSignature, uploadImageTODatabase } from "./action";
 
 export async function uploadImage(categoryForm: FormData) {
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -9,6 +9,8 @@ export async function uploadImage(categoryForm: FormData) {
 
   const formData = new FormData();
   const thumbnail = categoryForm.get("thumbnail");
+  const thumbnailFile = thumbnail as File;
+
   if (thumbnail) {
     formData.append("file", thumbnail as Blob);
   }
@@ -29,10 +31,19 @@ export async function uploadImage(categoryForm: FormData) {
   );
 
   const data = await response.json();
+  console.log("TCL: uploadImage -> data", data);
 
   if (response.ok) {
     const url = data.secure_url.split("/")[7];
     const link = `http://localhost:3000/images/${url}`;
+    await uploadImageTODatabase(
+      link,
+      thumbnailFile.size,
+      thumbnailFile.type,
+      thumbnailFile.name,
+      data.width,
+      data.height
+    );
     return link;
   } else {
     console.log("error=>", data.error.message);
